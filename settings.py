@@ -58,8 +58,7 @@ class SettingsMenu:
             relative_rect=pygame.Rect((self.width // 2 - 100, self.height // 2), (200, 50)),
             text='Back',
             manager=self.manager
-        )
-        
+        )        
 
     def run(self):
         clock = pygame.time.Clock()
