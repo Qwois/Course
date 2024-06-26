@@ -59,6 +59,7 @@ class SettingsMenu:
             text='Back',
             manager=self.manager
         )
+        
 
     def run(self):
         clock = pygame.time.Clock()
