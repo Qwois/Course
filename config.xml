@@ -1,0 +1,11 @@
+<config>
+    <window_width>800</window_width>
+    <window_height>600</window_height>
+    <rows>3</rows>
+    <cols>3</cols>
+    <tile_size>100</tile_size>
+    <background_color>0, 0, 0</background_color>
+    <tile_color>50, 50, 50</tile_color>
+    <text_color>255, 255, 255</text_color>
+    <font_size>36</font_size>
+</config>
