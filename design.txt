@@ -1,9 +1,0 @@
-window_width = 800
-window_height = 600
-rows = 3
-cols = 3
-tile_size = 100
-background_color = 0, 0, 0
-tile_color = 50, 50, 50
-text_color = 255, 255, 255
-font_size = 36
