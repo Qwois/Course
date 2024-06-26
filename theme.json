@@ -12,6 +12,18 @@
             "fallback_text_sizes": [14]
         }
     },
+    "#main_menu_button": {
+        "font": {
+            "name": "assets/fonts/Ubuntu-Regular.ttf",
+            "size": 30
+        },
+        "colours": {
+            "normal_bg": "#34E0BD",
+            "hovered_bg": "#20A2E6",
+            "active_bg": "#1D8348",
+            "normal_text": "#000000"
+        }
+    },
     "button": {
         "normal_bg": {
             "colour": "#34E0BD"

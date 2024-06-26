@@ -38,7 +38,7 @@ class PuzzleGame:
         random.shuffle(self.tiles)
         self.empty_tile = self.tiles.index(0)
 
-        self.font = pygame.font.Font("font/Ubuntu-Regular.ttf", self.font_size)
+        self.font = pygame.font.Font("assets/fonts/Ubuntu-Regular.ttf", self.font_size)
         self.running = True
 
         pygame.mixer.init()
@@ -47,6 +47,9 @@ class PuzzleGame:
         pygame.mixer.music.load('assets/music/Pixel Dreams.mp3')
         pygame.mixer.music.set_volume(0.3)
         pygame.mixer.music.play(-1)
+
+        # Background effects: falling stars
+        self.stars = [{'x': random.randint(0, self.width), 'y': random.randint(0, self.height), 'speed': random.uniform(0.5, 2.5)} for _ in range(100)]
 
     def load_xml_config(self, filename):
         try:
@@ -100,6 +103,28 @@ class PuzzleGame:
         self.tiles[self.empty_tile], self.tiles[swap_index] = self.tiles[swap_index], self.tiles[self.empty_tile]
         self.empty_tile = swap_index
 
+    def update_stars(self):
+        for star in self.stars:
+            star['y'] += star['speed']
+            if star['y'] > self.height:
+                star['x'] = random.randint(0, self.width)
+                star['y'] = 0
+
+    def draw_stars(self):
+        for star in self.stars:
+            pygame.draw.circle(self.screen, (255, 255, 255), (int(star['x']), int(star['y'])), 2)
+
+    def draw_gradient_background(self):
+        color_top = (0, 0, 0)
+        color_bottom = (25, 25, 112)
+        for y in range(self.height):
+            color = (
+                int(color_top[0] + (color_bottom[0] - color_top[0]) * y / self.height),
+                int(color_top[1] + (color_bottom[1] - color_top[1]) * y / self.height),
+                int(color_top[2] + (color_bottom[2] - color_top[2]) * y / self.height),
+            )
+            pygame.draw.line(self.screen, color, (0, y), (self.width, y))
+
     def run(self):
         frame_idx = 0
         clock = pygame.time.Clock()
@@ -118,8 +143,9 @@ class PuzzleGame:
                     elif event.key == pygame.K_RIGHT:
                         self.move_tile("right")
 
-            self.screen.fill(self.background_color)
-
+            self.update_stars()
+            self.draw_gradient_background()
+            self.draw_stars()
             self.draw_tiles()
             pygame.display.update()
 

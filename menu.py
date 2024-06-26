@@ -2,10 +2,9 @@ import pygame
 import pygame_gui
 import xml.etree.ElementTree as ET
 from puzzle_game import PuzzleGame
-from settings import SettingsMenu
+from settings import SettingsMenu, Settings
 from stats import Statistics
 from pygame_gui.elements import UITextEntryLine, UIButton
-
 
 class MainMenu:
     def __init__(self, config_filename):
@@ -17,6 +16,7 @@ class MainMenu:
         self.screen = pygame.display.set_mode((self.width, self.height))
         pygame.display.set_caption("Colorful Puzzle Game")
 
+        self.settings = Settings()  # Создаем экземпляр настроек
         self.manager = pygame_gui.UIManager((self.width, self.height), 'theme.json')
         self.stats = Statistics()
         self.background_image = pygame.image.load("assets/background.jpg").convert()
@@ -61,8 +61,6 @@ class MainMenu:
             object_id='#main_menu_button'
         )
 
-        self.manager.ui_theme.load_theme('theme.json')
-
     def run(self):
         clock = pygame.time.Clock()
         while self.running:
@@ -78,6 +76,7 @@ class MainMenu:
                             self.show_settings()
                         elif event.ui_element == self.stats_button:
                             self.show_stats()
+                                
                 self.manager.process_events(event)
             self.manager.update(time_delta)
             self.screen.blit(self.background_image, (0, 0))
@@ -95,7 +94,7 @@ class MainMenu:
 
     def show_settings(self):
         self.running = False
-        settings_menu = SettingsMenu(self)
+        settings_menu = SettingsMenu(self.width, self.height, self.settings)
         settings_menu.run()
 
     def show_stats(self):
@@ -142,18 +141,16 @@ class NameInputMenu:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                if event.type == pygame.USEREVENT:
+                elif event.type == pygame.USEREVENT:
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                         if event.ui_element == self.start_button:
-                            player_name = self.name_input.get_text()
-                            self.running = False
-                            self.main_menu.start_game(player_name)
+                            self.main_menu.start_game(self.name_input.get_text())
                         elif event.ui_element == self.back_button:
                             self.running = False
-                            self.main_menu.run()
+                            self.main_menu.running = True
                 self.manager.process_events(event)
             self.manager.update(time_delta)
-            self.screen.fill((0, 0, 0))
+            self.screen.fill((255, 1, 0))
             self.manager.draw_ui(self.screen)
             pygame.display.update()
 
@@ -165,36 +162,23 @@ class StatsWindow:
         pygame.display.set_caption("Statistics")
 
         self.manager = pygame_gui.UIManager((self.width, self.height), 'theme.json')
-        self.background_image = pygame.image.load("assets/background.jpg").convert()
-        self.background_image = pygame.transform.scale(self.background_image, (self.width, self.height))
         self.main_menu = main_menu
         self.setup_ui()
 
         self.running = True
 
     def setup_ui(self):
-        stats_text = self.get_stats_text()
-        self.stats_label = pygame_gui.elements.UITextBox(
-            relative_rect=pygame.Rect((50, 50), (self.width - 100, self.height - 150)),
-            html_text=stats_text,
+        self.stats_label = pygame_gui.elements.UILabel(
+            relative_rect=pygame.Rect((self.width // 2 - 100, self.height // 2 - 50), (200, 50)),
+            text="Statistics Placeholder",
             manager=self.manager
         )
         self.back_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((self.width // 2 - 100, self.height - 70), (200, 50)),
+            relative_rect=pygame.Rect((self.width // 2 - 100, self.height // 2), (200, 50)),
             text='Back',
-            manager=self.manager
+            manager=self.manager,
+            object_id='#main_menu_button'
         )
-
-    def get_stats_text(self):
-        stats = self.main_menu.stats
-        stats.load_stats()
-        text = "<b>Statistics</b><br>"
-        for player, player_stats in stats.player_stats.items():
-            text += f"<b>{player}</b><br>"
-            text += f"Games Played: {player_stats['games_played']}<br>"
-            text += f"Total Moves: {player_stats['total_moves']}<br>"
-            text += f"Best Time: {player_stats['best_time']}<br><br>"
-        return text
 
     def run(self):
         clock = pygame.time.Clock()
@@ -203,17 +187,16 @@ class StatsWindow:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.running = False
-                if event.type == pygame.USEREVENT:
+                elif event.type == pygame.USEREVENT:
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
                         if event.ui_element == self.back_button:
                             self.running = False
-                            self.main_menu.run()
+                            self.main_menu.running = True
                 self.manager.process_events(event)
             self.manager.update(time_delta)
-            self.screen.blit(self.background_image, (0, 0))
+            self.screen.fill((255, 1, 0))
             self.manager.draw_ui(self.screen)
             pygame.display.update()
-
 
 if __name__ == "__main__":
     menu = MainMenu("config.xml")
