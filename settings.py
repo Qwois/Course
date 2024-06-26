@@ -42,23 +42,20 @@ class SettingsMenu:
         pygame.display.set_caption("Settings")
 
         self.manager = pygame_gui.UIManager((self.width, self.height))
-        self.settings = Settings()
+        self.background_image = pygame.image.load("assets/background.jpg").convert()
+        self.background_image = pygame.transform.scale(self.background_image, (self.width, self.height))
+        self.main_menu = main_menu
         self.setup_ui()
 
         self.running = True
-        self.main_menu = main_menu
 
     def setup_ui(self):
-        self.music_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((self.width // 2 - 100, self.height // 2 - 75), (200, 50)),
-            text='Toggle Music',
-            manager=self.manager
-        )
         self.back_button = pygame_gui.elements.UIButton(
-            relative_rect=pygame.Rect((self.width // 2 - 100, self.height // 2), (200, 50)),
+            relative_rect=pygame.Rect((self.width // 2 - 100, self.height - 70), (200, 50)),
             text='Back',
-            manager=self.manager
-        )        
+            manager=self.manager,
+            object_id='#main_menu_button'
+        )
 
     def run(self):
         clock = pygame.time.Clock()
@@ -69,18 +66,15 @@ class SettingsMenu:
                     self.running = False
                 if event.type == pygame.USEREVENT:
                     if event.user_type == pygame_gui.UI_BUTTON_PRESSED:
-                        if event.ui_element == self.music_button:
-                            self.settings.toggle_music()
-                            print(f"Music Enabled: {self.settings.get_music_enabled()}")
-                        elif event.ui_element == self.back_button:
+                        if event.ui_element == self.back_button:
                             self.running = False
-                            self.main_menu.run()  # Return to main menu instead of closing the application
+                            self.main_menu.run()
                 self.manager.process_events(event)
             self.manager.update(time_delta)
-            self.screen.fill((0, 0, 0))
+            self.screen.blit(self.background_image, (0, 0))
             self.manager.draw_ui(self.screen)
             pygame.display.update()
-        self.main_menu.running = True  # Ensure main menu continues running when settings menu is closed
+
 
 if __name__ == "__main__":
     settings_menu = SettingsMenu(None)

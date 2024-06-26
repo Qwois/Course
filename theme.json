@@ -1,0 +1,51 @@
+{
+    "font_paths": [
+        {
+            "id": "default",
+            "path": "assets/fonts/Ubuntu-Regular.ttf"
+        }
+    ],
+    "font_info": {
+        "default": {
+            "default_text_size": 14,
+            "text_sizes": [14, 24, 30],
+            "fallback_text_sizes": [14]
+        }
+    },
+    "button": {
+        "normal_bg": {
+            "colour": "#34E0BD"
+        },
+        "hovered_bg": {
+            "colour": "#20A2E6"
+        },
+        "disabled_bg": {
+            "colour": "#2e2e2e"
+        },
+        "border": {
+            "width": 1,
+            "colour": "#000000"
+        },
+        "text": {
+            "colour": "#000000"
+        }
+    },
+    "text_entry": {
+        "normal_bg": {
+            "colour": "#ffffff"
+        },
+        "active_bg": {
+            "colour": "#cccccc"
+        },
+        "disabled_bg": {
+            "colour": "#aaaaaa"
+        },
+        "border": {
+            "width": 1,
+            "colour": "#000000"
+        },
+        "text": {
+            "colour": "#000000"
+        }
+    }
+}
