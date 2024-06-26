@@ -7,7 +7,7 @@ Foobar is a Python library for dealing with word pluralization.
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install correct libary.
 
 ```bash
-pip install pygame_gui pygame
+pip install pygame_gui pygame moviepy numpy imageio
 ```
 
 ## Usage
